@@ -1,0 +1,129 @@
+{
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "cmake --preset=Debug ; cmake --build build/Debug --target all",
+            "args": [],
+            "problemMatcher": "$gcc",
+            "group": "build",
+            "detail": "编译源码"
+        },
+        {
+            "type": "shell",
+            "label": "clean",
+            "command": "cmake --build build/Debug --target clean",
+            "args": [],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "type": "shell",
+            "label": "rebuild",
+            "command": "cmake --build build/Debug --target clean;cmake --build build/Debug --target all",
+            "args": [],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "dependsOn": [
+                "clean"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "flash with cmsis-dap-link",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/cmsis-dap.cfg",
+                "-f",
+                "target/stm32f4x.cfg",
+                "-c",
+                "program ./build/Debug/R1-shooter.elf verify reset",
+                "-c",
+                "reset run",
+                "-c",
+                "exit"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "dependsOn": [
+                "build"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "flash with ST-link",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/stlink.cfg",
+                "-f",
+                "target/stm32f4x.cfg",
+                "-c",
+                "program ./build/Debug/R1-shooter.elf verify reset",
+                "-c",
+                "reset run",
+                "-c",
+                "exit"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "dependsOn": [
+                "build"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "flash with J-link",
+            "command": "openocd",
+            "args": [
+                "-f",
+                "interface/jlink-swd.cfg",
+                "-f",
+                "target/stm32f1x.cfg",
+                "-c",
+                "program ./build/Debug/5.elf verify reset",
+                "-c",
+                "reset run",
+                "-c",
+                "exit"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "dependsOn": [
+                "build"
+            ]
+        },
+        {
+            "type": "cppbuild",
+            "label": "C/C++: arm-none-eabi-gcc.exe 生成活动文件",
+            "command": "D:/toolchain/gcc-arm-none-eabi-10.3-2021.10-win32/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "D:/toolchain/gcc-arm-none-eabi-10.3-2021.10-win32/gcc-arm-none-eabi-10.3-2021.10/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "调试器生成的任务。"
+        }
+    ],
+    "version": "2.0.0"
+}
